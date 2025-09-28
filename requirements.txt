@@ -1,0 +1,18 @@
+# Core framework
+Django==5.0.6
+Flask==3.0.3
+
+# Task queue
+celery==5.4.0
+redis==5.0.4
+
+# Freezing / binary building
+pyinstaller==6.9.0
+
+# Optional but recommended
+gunicorn==22.0.0   # for production server
+
+# Required for fetcher and building
+requests
+packaging
+build
