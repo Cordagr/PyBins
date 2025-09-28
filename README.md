@@ -172,10 +172,6 @@ The service can be configured via environment variables:
 2. For worker-specific routes, use `worker/urls.py` with `worker_bp` blueprint
 3. For API routes, use `api/server.py` with `api_blueprint`
 
-### Adding New Features
-1. Implement core logic in appropriate modules (fetcher, storage, worker)
-2. Add API endpoints in the relevant blueprint
-3. Update this README with new endpoints
 
 ## License
 
