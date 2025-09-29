@@ -2,6 +2,7 @@ import os
 from flask import send_from_directory
 from flask import Blueprint, request, jsonify, abort, Response
 from ..worker.tasks import build_package_task, run_build, get_build_status, list_builds
+from ..queue.setup import queue
 from ..fetcher.fetcher import fetch_from_pypi, fetch_from_github
 from ..storage.storage import PackageStorage
 
@@ -54,12 +55,12 @@ def enqueue_build():
     version = data.get('version', 'latest')
     
    
-    result = build_package_task(package_name, version)
-    
+    # Enqueue the build task in the background
+    job = queue.enqueue(build_package_task, package_name, version)
     return jsonify({
         'message': 'Build enqueued successfully',
-        'build_id': result['build_id'],
-        'status': result['status']
+        'job_id': job.get_id(),
+        'status': 'queued'
     }), 202
 
 @routes_bp.route('/build', methods=['POST'])

@@ -117,10 +117,13 @@ Or in PowerShell:
 Invoke-WebRequest -Uri "http://localhost:5000/download/<build_id>/<filename>" -OutFile <filename>
 ```
 
-### Enqueue a Build
+
+### Enqueue a Build (Background Job)
+The `/enqueue` endpoint now uses a background job queue (RQ/Redis) to process builds asynchronously. You must run an RQ worker for jobs to be processed.
+
 ```bash
-curl -X POST http://localhost:5000/enqueue \\
-  -H "Content-Type: application/json" \\
+curl -X POST http://localhost:5000/enqueue \
+  -H "Content-Type: application/json" \
   -d '{"package": "flask", "version": "2.3.0"}'
 ```
 
@@ -128,6 +131,15 @@ curl -X POST http://localhost:5000/enqueue \\
 ```powershell
 Invoke-WebRequest -Uri "http://localhost:5000/enqueue" -Method POST -ContentType "application/json" -Body '{"package": "flask", "version": "2.3.0"}'
 ```
+
+#### Running the Worker
+You must have Redis running (default: `localhost:6379`). Then, in a separate terminal:
+
+```bash
+rq worker builds --path pybins
+```
+
+This will process enqueued build jobs in the background.
 
 ### Check Build Status
 ```bash

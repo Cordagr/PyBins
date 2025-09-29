@@ -1,3 +1,6 @@
+# For background job queue
+rq
+redis
 # Core framework
 Django==5.0.6
 Flask==3.0.3
